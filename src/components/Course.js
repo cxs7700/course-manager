@@ -3,17 +3,10 @@ import { Row, Col, Card, CardFooter, CardBody, CardText, Button,
   CardHeader, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
-const Course = () => {
+const Course = ({ courses }) => {
   const [selected, setSelected] = useState([]);
   const [modalHeader, setModalHeader] = useState("");
   const [modalBody, setModalBody] = useState("");
-
-  let data = [ 
-    {name: 'swen-250', desc: 'personal software eng', details: 'C and fun with vi and command line'},
-    {name: 'swen-331', desc: 'secure software', details: 'Fuzzer - you will love it, you will fear it!'},
-    {name: 'swen-440', desc: 'system architecture', details: 'Services?  What what\'s a service?  I need do do math for metrics?'},
-    {name: 'swen-344', desc: 'web engineering', details: 'You mean web pages, right?  Wait, there\'s more?'}
-  ];
   
   useEffect(() => {
     let cards = document.getElementsByClassName("card");
@@ -34,9 +27,9 @@ const Course = () => {
     }
     setModal(!modal);
     let id = e.target.id;
-    if (id && data) {
-      setModalHeader(data[id].name);
-      setModalBody(data[id].details);
+    if (id && courses) {
+      setModalHeader(courses[id][1]);
+      setModalBody(courses[id][3]);
     }
   };
   
@@ -48,6 +41,28 @@ const Course = () => {
       e.target.innerText = "Add";
       setSelected(selected.filter(x => x !== e.target.id))
     }
+  }
+  
+  const allCourses = () => {
+    let result = [];
+    for (let i = 0; i < courses.length; i++) {
+      result.push(
+        <Col className="text-center">
+          <Card id={i}>
+            <CardHeader>
+              {courses[i][1] + " "}
+              {/* eslint-disable-next-line */}
+              <HelpOutlineIcon id={i} focusable={true} onClick={toggle} style={{verticalAlign: "bottom", cursor: "pointer"}} color="primary" fontSize="medium"/>
+            </CardHeader>
+            <CardBody>
+              <CardText>{courses[i][2]}</CardText>
+            </CardBody>
+            <CardFooter><Button id={i} color="primary" onClick={handleClick}>Add</Button></CardFooter>
+          </Card>
+        </Col>
+      )
+    }
+    return result
   }
   
   return (
@@ -63,23 +78,7 @@ const Course = () => {
         <CardHeader>Courses</CardHeader>
         <CardBody>
           <Row>
-            {data.map((entry, idx) => {
-              return (
-                <Col className="text-center">
-                  <Card id={idx}>
-                    <CardHeader>
-                      {entry.name + " "}
-                      {/* eslint-disable-next-line */}
-                      <HelpOutlineIcon id={idx} focusable={true} onClick={toggle} style={{verticalAlign: "bottom", cursor: "pointer"}} color="primary" fontSize="medium"/>
-                    </CardHeader>
-                    <CardBody>
-                      <CardText>{entry.desc}</CardText>
-                    </CardBody>
-                    <CardFooter><Button id={idx} color="primary" onClick={handleClick}>Add</Button></CardFooter>
-                  </Card>
-                </Col>
-              )
-            })}
+            {allCourses()}
           </Row>
         </CardBody>
       </Card>
@@ -90,7 +89,7 @@ const Course = () => {
             <Col className="text-center">
               {selected.map(selection => {
                 return (
-                  <div>{data[selection].name + " -- " + data[selection].desc}</div>
+                  <div>{courses[selection][1] + " -- " + courses[selection][2]}</div>
                 )
               })}
             </Col>

@@ -15,19 +15,11 @@ class CourseList extends React.Component {
   }
   
   fetchData() {
-    //In package.json add "proxy": "http://localhost:5000" 
-    //This will allow redirect to REST api in Flask w/o CORS errors
-    fetch('/example_api')
-    .then(
+    fetch('/coursedata').then(
       response => response.json() 
-    )
-    //The promise response is returned, then we extract the json data
-    .then (jsonOutput => //jsonOutput now has result of the data extraction
-      {
-        // this.updateData(jsonOutput)
-        console.log(jsonOutput)
-      }
-    )
+    ).then(courses => {
+        this.updateData(courses)
+    })
   }
   
   updateData = (apiResponse) => {
@@ -36,17 +28,16 @@ class CourseList extends React.Component {
   
   componentDidMount() {
     this.fetchData();
-    console.log()
-  }
-  
-  toggle() {
+}
+
+toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+        isOpen: !this.state.isOpen
     });
-  }
-  
-  render() {
-      return (
+}
+
+render() {
+    return (
           <div>
               <Navbar color="inverse" light expand="md">
                   <NavbarBrand href="/">reactstrap</NavbarBrand>
@@ -83,7 +74,9 @@ class CourseList extends React.Component {
                   </Container>
               </Jumbotron>
               <Container>
-                  <Course />
+                  <Course 
+                      courses={this.state.data}
+                  />
               </Container>
           </div>
       );
