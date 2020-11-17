@@ -2,7 +2,7 @@
   "name": "react-3-cxs7700",
   "version": "0.1.0",
   "homepage": ".",  
-  "proxy": "http://localhost:5000",  
+  "proxy": "http://localhost:5000/",  
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",

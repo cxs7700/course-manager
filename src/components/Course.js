@@ -8,6 +8,7 @@ const Course = ({ courses }) => {
   const [modalHeader, setModalHeader] = useState("");
   const [modalBody, setModalBody] = useState("");
   
+  // Changes border color on addition or removal
   useEffect(() => {
     let cards = document.getElementsByClassName("card");
     for (let i = 0; i < cards.length; i++) {
@@ -34,12 +35,26 @@ const Course = ({ courses }) => {
   };
   
   const handleClick = e => {
+    let id = e.target.id;
+    let formData = new FormData();
     if (e.target.innerText === "Add") {
       e.target.innerText = "Remove";
-      setSelected(selected.concat(e.target.id))
+      setSelected(selected.concat(id))
+      formData.set('selected', true)
+      fetch(`/coursedata/${id}/update`, {
+        method: 'PUT',
+        body: formData
+      }).then(response => response.json())
+      .then(data => console.log(data))
     } else {
       e.target.innerText = "Add";
-      setSelected(selected.filter(x => x !== e.target.id))
+      setSelected(selected.filter(x => x !== id))
+      formData.set('selected', false)
+      fetch(`/coursedata/${id}/update`, {
+        method: 'PUT',
+        body: formData
+      }).then(response => response.json())
+      .then(data => console.log(data))
     }
   }
   
@@ -77,9 +92,7 @@ const Course = ({ courses }) => {
       <Card>
         <CardHeader>Courses</CardHeader>
         <CardBody>
-          <Row>
-            {allCourses()}
-          </Row>
+          <Row>{ allCourses() }</Row>
         </CardBody>
       </Card>
       <Card>
