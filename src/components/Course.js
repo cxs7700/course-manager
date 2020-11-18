@@ -45,7 +45,6 @@ const Course = ({ courses }) => {
         method: 'PUT',
         body: formData
       }).then(response => response.json())
-      .then(data => console.log(data))
     } else {
       e.target.innerText = "Add";
       setSelected(selected.filter(x => x !== id))
@@ -54,7 +53,6 @@ const Course = ({ courses }) => {
         method: 'PUT',
         body: formData
       }).then(response => response.json())
-      .then(data => console.log(data))
     }
   }
   
